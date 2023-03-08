@@ -1,8 +1,8 @@
 ﻿using SimpleRestfulApi.Domain.Models;
 
-namespace SimpleRestfulApi.Services
+namespace SimpleRestfulApi.Domain.Repositories
 {
-    public interface ICategoryService
+    public interface ICategoryRespository
     {
         Task<IEnumerable<Category>> ListAsync();
     }

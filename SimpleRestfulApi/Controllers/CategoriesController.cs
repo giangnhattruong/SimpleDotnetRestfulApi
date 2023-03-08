@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleRestfulApi.Domain.Models;
-using SimpleRestfulApi.Services;
+using SimpleRestfulApi.Domain.Services;
 
 namespace SimpleRestfulApi.Controllers
 {
