@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using SimpleRestfulApi.Domain.Repositories;
 using SimpleRestfulApi.Domain.Services;
 using SimpleRestfulApi.Persistence.Contexts;
@@ -19,6 +18,8 @@ namespace SimpleRestfulApi.Startup
             services.AddDbContext<AppDbContext>(options => {
                 options.UseInMemoryDatabase("supermarket-api-in-memory");
             });
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<ICategoryRespository, CategoryRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
