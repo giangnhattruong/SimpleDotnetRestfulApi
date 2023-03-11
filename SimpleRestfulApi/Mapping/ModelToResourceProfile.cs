@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SimpleRestfulApi.Domain.Models;
+using SimpleRestfulApi.Extensions;
 using SimpleRestfulApi.Resources;
 
 namespace SimpleRestfulApi.Mapping
@@ -9,6 +10,10 @@ namespace SimpleRestfulApi.Mapping
         public ModelToResourceProfile()
         {
             CreateMap<Category, CategoryResource>();
+
+            CreateMap<Product, ProductResource>()
+                .ForMember(src => src.UnitOfMeasurement,
+                           opt => opt.MapFrom(src => src.UnitOfMeasurement.ToDescriptionString()));
         }
     }
 }

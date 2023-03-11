@@ -6,7 +6,7 @@ using SimpleRestfulApi.Resources;
 
 namespace SimpleRestfulApi.Persistence.Repositories
 {
-    public class CategoryRepository : BaseRepository, ICategoryRespository
+    public class CategoryRepository : BaseRepository, ICategoryRepository
     {
         public CategoryRepository(AppDbContext context) : base(context)
         {
@@ -30,6 +30,11 @@ namespace SimpleRestfulApi.Persistence.Repositories
         public void Update(Category category)
         {
             _context.Categories.Update(category);
+        }
+
+        public void Delete(Category category)
+        {
+            _context.Categories.Remove(category);
         }
     }
 }

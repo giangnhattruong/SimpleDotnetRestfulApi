@@ -39,7 +39,7 @@ namespace SimpleRestfulApi.Controllers
             var result = await _categoryService.SaveAsync(category);
 
             if (!result.Success)
-                return BadRequest();
+                return BadRequest(result.Message);
 
             var categoryResource = _mapper.Map<Category, CategoryResource>(result.Category);
 
@@ -57,11 +57,22 @@ namespace SimpleRestfulApi.Controllers
             var result = await _categoryService.UpdateAsync(id, category);
 
             if (!result.Success)
-                return BadRequest();
+                return BadRequest(result.Message);
 
             var categoryResource = _mapper.Map<Category, CategoryResource>(result.Category);
 
             return Ok(categoryResource);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var result = await _categoryService.DeleteAsync(id);
+
+            if (!result.Success)
+                return BadRequest(result.Message);
+
+            return NoContent();
         }
     }
 }
