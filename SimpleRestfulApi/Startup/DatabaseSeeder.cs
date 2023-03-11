@@ -1,15 +1,23 @@
-﻿using SimpleRestfulApi.Persistence.Contexts;
+﻿using Microsoft.Extensions.Hosting;
+using SimpleRestfulApi.Persistence.Contexts;
 
 namespace SimpleRestfulApi.Startup
 {
     public static class DatabaseSeeder
     {
-        public static WebApplication SeedData(this WebApplication app)
+        public static async Task<WebApplication> InitData(this WebApplication app)
         {
-            using (var scope = app.Services.CreateScope())
-            using (var context = scope.ServiceProvider.GetService<AppDbContext>())
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            try
             {
-                context.Database.EnsureCreated();
+                var context = services.GetRequiredService<AppDbContext>();
+                await SeedData.Seed(context);
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occured during Seeding Data");
             }
             return app;
         }

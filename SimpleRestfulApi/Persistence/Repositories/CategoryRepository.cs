@@ -8,13 +8,16 @@ namespace SimpleRestfulApi.Persistence.Repositories
 {
     public class CategoryRepository : BaseRepository, ICategoryRepository
     {
-        public CategoryRepository(AppDbContext context) : base(context)
-        {
-        }
+        public CategoryRepository(AppDbContext context) : base(context) { }
 
         public async Task<IEnumerable<Category>> ListAsync()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Categories
+                                 .AsNoTracking()
+                                 .ToListAsync();
+
+            // AsNoTracking tells EF Core it doesn't need to track changes on listed entities. Disabling entity
+            // tracking makes the code a little faster
         }
 
         public async Task AddAsync(Category category)
@@ -32,7 +35,7 @@ namespace SimpleRestfulApi.Persistence.Repositories
             _context.Categories.Update(category);
         }
 
-        public void Delete(Category category)
+        public void Remove(Category category)
         {
             _context.Categories.Remove(category);
         }

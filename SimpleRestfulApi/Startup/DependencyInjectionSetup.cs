@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SimpleRestfulApi.Controllers.Config;
 using SimpleRestfulApi.Domain.Repositories;
 using SimpleRestfulApi.Domain.Services;
 using SimpleRestfulApi.Persistence.Contexts;
@@ -11,7 +12,14 @@ namespace SimpleRestfulApi.Startup
     {
         public static IServiceCollection RegisteredServices(this IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddMemoryCache();
+
+            services.AddControllers().ConfigureApiBehaviorOptions(options =>
+            {
+                // Adds a custom error response factory when ModelState is invalid
+                options.InvalidModelStateResponseFactory = InvalidModelStateResponseFactory.ProduceErrorResponse;
+            });
+
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
