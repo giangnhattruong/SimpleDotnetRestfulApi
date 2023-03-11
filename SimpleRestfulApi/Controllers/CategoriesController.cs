@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleRestfulApi.Domain.Models;
 using SimpleRestfulApi.Domain.Services;
+using SimpleRestfulApi.Extensions;
 using SimpleRestfulApi.Resources;
 
 namespace SimpleRestfulApi.Controllers
@@ -25,6 +26,42 @@ namespace SimpleRestfulApi.Controllers
             var categories = await _categoryService.ListAsync();
             var resources = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryResource>>(categories);
             return resources;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostAsync([FromBody] SaveCategoryResource resource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.GetErrorMessages());
+
+            var category = _mapper.Map<SaveCategoryResource, Category>(resource);
+
+            var result = await _categoryService.SaveAsync(category);
+
+            if (!result.Success)
+                return BadRequest();
+
+            var categoryResource = _mapper.Map<Category, CategoryResource>(result.Category);
+
+            return Ok(categoryResource);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAsync(int id, [FromBody] SaveCategoryResource resource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.GetErrorMessages());
+
+            var category = _mapper.Map<SaveCategoryResource, Category>(resource);
+
+            var result = await _categoryService.UpdateAsync(id, category);
+
+            if (!result.Success)
+                return BadRequest();
+
+            var categoryResource = _mapper.Map<Category, CategoryResource>(result.Category);
+
+            return Ok(categoryResource);
         }
     }
 }

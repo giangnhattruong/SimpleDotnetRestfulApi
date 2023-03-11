@@ -23,6 +23,7 @@ namespace SimpleRestfulApi.Startup
 
             services.AddScoped<ICategoryRespository, CategoryRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
     }
